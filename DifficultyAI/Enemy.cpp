@@ -42,6 +42,6 @@ char Enemy::Input(int playerAttackVal)
 		//cannot possibly evade
 		return 'd';
 	}
-
+	
 	return 'e';
 }
