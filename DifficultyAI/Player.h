@@ -23,6 +23,11 @@ class Player
 	void addDam(int add);
 	void addDef(int add);
 	void addEva(int add);
+	int GetDef();
+	int GetDam();
+	int GetEva();
+	int GetHealth();
+	void DoDamage(int doo);
 
 private:
 

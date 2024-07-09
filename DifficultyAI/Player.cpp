@@ -51,3 +51,28 @@ void Player::addEva(int add)
 {
 	stats.evaMod += add;
 }
+
+int Player::GetDef()
+{
+	return stats.defMod;
+}
+
+int Player::GetDam()
+{
+	return stats.damMod;
+}
+
+int Player::GetEva()
+{
+	return stats.evaMod;
+}
+
+int Player::GetHealth()
+{
+	return stats.health;
+}
+
+void Player::DoDamage(int doo)
+{
+	stats.health -= doo;
+}
