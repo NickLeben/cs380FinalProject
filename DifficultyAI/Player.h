@@ -1,6 +1,7 @@
 #pragma once
 class Player
 {
+public:
 	struct PlayerStats
 	{
 		int damMod;
@@ -14,6 +15,7 @@ class Player
 	};
 
 	Player();
+	~Player();
 
 	void CalculateWinLoss();
 	void CalculatePower();
