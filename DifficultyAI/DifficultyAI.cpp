@@ -4,11 +4,14 @@
 #include <iostream>
 #include <vector>
 #include "DifficulryAI.h"
+#include "Player.h"
+#include "Enemy.h"
 #include <string.h>
 
 int main()
 {
     std::cout << "Hello World!\n";
+    Player* mainGuy = new Player;
     std::vector<Room> RoomList;
     InitRoomVector(&RoomList, true);
     std::cout << RoomList[0].Description;
