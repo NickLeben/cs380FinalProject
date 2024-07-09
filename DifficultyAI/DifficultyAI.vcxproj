@@ -129,6 +129,9 @@
   <ItemGroup>
     <ClCompile Include="DifficultyAI.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DifficulryAI.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
