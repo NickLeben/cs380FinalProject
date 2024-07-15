@@ -7,13 +7,14 @@
 #include "Player.h"
 #include "Enemy.h"
 #include <string.h>
+#include <random>
 
 int main()
 {
     std::cout << "Hello World!\n";
     Player* mainGuy = new Player;
     std::vector<Room> RoomList;
-    InitRoomVector(&RoomList, true);
+    InitRoomVector(&RoomList, -1, true);
     std::cout << RoomList[0].Description;
 
     int location = 0;
@@ -22,11 +23,74 @@ int main()
     while (!exit)
     {
         std::cin >> input;
-        if (input == "north" && RoomList[location].NextRoom == -1)
+        if (input == "north" || input == "forwards")
         {
-            location = InitRoomVector(&RoomList);
-            //std::stringstream locstring;
-            //locstring << "at pos " << location;
+            if (RoomList[location].ForwardsRoom == -2)
+            {
+                std::cout << std::string("Thats a wall...");
+            }
+            else if (RoomList[location].ForwardsRoom == -1)
+            {
+                int oldloc = location;
+                location = InitRoomVector(&RoomList,location);
+                RoomList[oldloc].ForwardsRoom = location;
+                std::cout << RoomList[location].Description;
+            }
+            else
+            {
+                location = RoomList[location].ForwardsRoom;
+                std::cout << RoomList[location].Description;
+            }
+        }
+        else if (input == "west" || input == "right")
+        {
+            if (RoomList[location].rightRoom == -2)
+            {
+                std::cout << std::string("Thats a wall...");
+            }
+            else if (RoomList[location].rightRoom == -1)
+            {
+                int oldloc = location;
+                location = InitRoomVector(&RoomList, location);
+                RoomList[oldloc].rightRoom = location;
+                std::cout << RoomList[location].Description;
+            }
+            else
+            {
+                location = RoomList[location].rightRoom;
+                std::cout << RoomList[location].Description;
+            }
+        }
+        else if (input == "east" || input == "left")
+        {
+            if (RoomList[location].LeftRoom == -2)
+            {
+                std::cout << std::string("Thats a wall...");
+            }
+            else if (RoomList[location].LeftRoom == -1)
+            {
+                int oldloc = location;
+                location = InitRoomVector(&RoomList, location);
+                RoomList[oldloc].LeftRoom = location;
+                std::cout << RoomList[location].Description;
+            }
+            else
+            {
+                location = RoomList[location].LeftRoom;
+                std::cout << RoomList[location].Description;
+            }
+        }
+        else if (input == "south" || input == "back")
+        {
+            if (RoomList[location].ParentRoom == -1)
+            {
+                std::cout << std::string("No running away coward! \n");
+            }
+            else
+            {
+                location = RoomList[location].ParentRoom;
+                std::cout << RoomList[location].Description;
+            }
         }
     }
 }
@@ -42,19 +106,61 @@ int main()
 //   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
 //   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
 
-int InitRoomVector(std::vector<Room>* RoomList, bool start = false)
+int InitRoomVector(std::vector<Room>* RoomList, int loc, bool start)
 {
     Room StartRoom;
     if (start)
     {
-        StartRoom.Description = std::string("Blah Blah Blah you are at the entrance, type north to go into the dungeon");
+        StartRoom.Description = std::string("Blah Blah Blah you are at the entrance, type north or forwards to go into the dungeon \nYou can type left/west or right/east to go to the sides as well.\n");
+        StartRoom.ForwardsRoom = -1;
+        StartRoom.LeftRoom = -2;
+        StartRoom.rightRoom = -2;
         RoomList->push_back(StartRoom);
         return 0;
     }
     else
     {
-        StartRoom.Description = std::string("you in room, type north to go to the next room");
+        StartRoom = GenerateRoom(loc);
         RoomList->push_back(StartRoom);
         return RoomList->size() - 1;
     }
+}
+
+Room GenerateRoom(int Parent)
+{
+    std::random_device rd; 
+    std::mt19937 gen(rd()); //Sets up random number generation
+
+    Room NewRoom;
+
+    //list of descriptions, update count with changes or bad things will happen
+    #define DescOptions 5
+    std::string DescList[DescOptions] = { std::string("mongus room.\n"), std::string("chungus room.\n"), std::string("fungus room.\n"), std::string("word that ends with -ungus room.\n"), std::string("r o o m n a m e.\n") };
+
+    std::uniform_int_distribution<> DescRand(0, DescOptions-1);
+
+    NewRoom.Description = DescList[DescRand(gen)]; //Chose random description
+
+    std::uniform_int_distribution<> CountRand(1, 3);
+    int DoorCount = CountRand(gen);
+    for (int i = 3; i > DoorCount; i--)
+    {
+        int choice = CountRand(gen); //can chose a door thats already been selected, whatever
+        if (choice == 3)
+        {
+            NewRoom.rightRoom = -2;
+        }
+        else if (choice == 2)
+        {
+            NewRoom.ForwardsRoom = -2;
+        }
+        else
+        {
+            NewRoom.LeftRoom = -2;
+        }
+    }
+
+    //use algorithm for items/
+    NewRoom.ParentRoom = Parent;
+    return NewRoom;
 }

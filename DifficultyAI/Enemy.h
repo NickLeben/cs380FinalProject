@@ -12,6 +12,7 @@ public:
 	};
 
 	Enemy(int dam, int def, int eva,int health);
+	Enemy();
 
 	int GetDef();
 	int GetDam();

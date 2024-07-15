@@ -8,6 +8,14 @@ Enemy::Enemy(int dam, int def, int eva, int health)
 	stats.health = health;
 }
 
+Enemy::Enemy()
+{
+	stats.damMod = 0;
+	stats.defMod = 0;
+	stats.evaMod = 0;
+	stats.health = 1;
+}
+
 int Enemy::GetDef()
 {
 	return stats.defMod;
