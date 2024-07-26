@@ -22,4 +22,4 @@ public:
 
 int InitRoomVector(std::vector<Room>* RoomList, int loc, bool start = false);
 Room GenerateRoom(int ParentRoom);
-void Combat(Enemy enmy, Player* plyr);
+void Combat(Enemy enmy, Player* plyr, bool AutoMode);

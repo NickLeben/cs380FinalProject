@@ -16,7 +16,7 @@ Player* mainGuy;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    //std::cout << "Hello World!\n";
 
     mainGuy = new Player;
     std::vector<Room> RoomList;
@@ -25,17 +25,47 @@ int main()
 
     enemyMan.Init();
 
+    bool AutoTest = false;
+    int AutoInc = 0;
+    int AutoRoom = 0;
+    int AutoLimit = 100;
     int location = 0;
     bool exit = false;
     std::string input;
     while (!exit)
     {
-        std::cin >> input;
+        if (AutoTest)
+        {
+            if (AutoInc == 0)
+            {
+                input = "north";
+            }
+            else if (AutoInc == 1)
+            {
+                input = "east";
+            }
+            else
+            {
+                input = "west";
+            }
+
+            if (AutoRoom >= AutoLimit)
+            {
+                std::cout << std::string("Done!\n");
+                std::cin >> input;
+            }
+            AutoRoom++;
+        }
+        else
+        {
+            std::cin >> input;
+        }
         if (input == "north" || input == "forwards")
         {
             if (RoomList[location].ForwardsRoom == -2)
             {
-                std::cout << std::string("Thats a wall...");
+                std::cout << std::string("Thats a wall...(n)\n");
+                AutoInc = 1;
             }
             else if (RoomList[location].ForwardsRoom == -1)
             {
@@ -45,7 +75,7 @@ int main()
                 std::cout << RoomList[location].Description;
                 //if (RoomList[location].EnemyInRoom.GetHealth() > 0)
                 //{
-                Combat(RoomList[location].EnemyInRoom, mainGuy);
+                Combat(RoomList[location].EnemyInRoom, mainGuy, AutoTest);
                 //}
             }
             else
@@ -58,7 +88,8 @@ int main()
         {
             if (RoomList[location].rightRoom == -2)
             {
-                std::cout << std::string("Thats a wall...");
+                std::cout << std::string("Thats a wall...(w)\n");
+                AutoInc = 0;
             }
             else if (RoomList[location].rightRoom == -1)
             {
@@ -66,7 +97,7 @@ int main()
                 location = InitRoomVector(&RoomList, location);
                 RoomList[oldloc].rightRoom = location;
                 std::cout << RoomList[location].Description;
-                Combat(RoomList[location].EnemyInRoom, mainGuy);
+                Combat(RoomList[location].EnemyInRoom, mainGuy, AutoTest);
             }
             else
             {
@@ -78,7 +109,8 @@ int main()
         {
             if (RoomList[location].LeftRoom == -2)
             {
-                std::cout << std::string("Thats a wall...");
+                std::cout << std::string("Thats a wall...(e)\n");
+                AutoInc = 2;
             }
             else if (RoomList[location].LeftRoom == -1)
             {
@@ -86,7 +118,7 @@ int main()
                 location = InitRoomVector(&RoomList, location);
                 RoomList[oldloc].LeftRoom = location;
                 std::cout << RoomList[location].Description;
-                Combat(RoomList[location].EnemyInRoom, mainGuy);
+                Combat(RoomList[location].EnemyInRoom, mainGuy, AutoTest);
             }
             else
             {
@@ -116,8 +148,10 @@ int main()
             enemyMan.CalculateWinPerc();
             std::cout << std::string("Winrate: ") << enemyMan.GetWinLoss() << std::string("\n");
         }
-        // add option to print out player stats
-
+        else if (input == "auto")
+        {
+            AutoTest = true;
+        }
     }
 }
 
@@ -195,7 +229,7 @@ Room GenerateRoom(int Parent)
     return NewRoom;
 }
 
-void Combat(Enemy enmy, Player* plyr)
+void Combat(Enemy enmy, Player* plyr, bool AutoMode)
 {
     int turn = 0;
     std::cout << std::string("Supprise, A goblin! \n");
@@ -225,15 +259,21 @@ void Combat(Enemy enmy, Player* plyr)
             std::cout << std::string("Do you defend or evade?\n");
             int DmgRoll = std::max(1, D6Rand(gen) + enmy.GetDam());
             std::cout << std::string("They are doing ") << DmgRoll << std::string(" damage.\n");
-            std::cin >> input;
+            if (AutoMode)
+            {
+                input = "defend";
+            }
+            else
+            {
+                std::cin >> input;
+            }
             if (input == "defend" || input == "Defend")
             {
                 //do dice roll
                 int DefRoll = std::max(1, D6Rand(gen) + plyr->GetDef());
                 //int DmgRoll = std::max(1, D6Rand(gen) + enmy.GetDam());
-                std::cout << std::string("You take ") << static_cast<int>(DmgRoll / DefRoll) << std::string(" damage!\n");
-                plyr->DoDamage(static_cast<int>(DmgRoll / DefRoll));
-                turn = 1;
+                std::cout << std::string("You take ") << std::max(1, DmgRoll-DefRoll) << std::string(" damage!\n");
+                plyr->DoDamage(std::max(1, DmgRoll - DefRoll));
             }
             else if (input == "evade" || input == "Evade")
             {
@@ -269,8 +309,8 @@ void Combat(Enemy enmy, Player* plyr)
                 int DefRoll = std::max(1, D6Rand(gen) + enmy.GetDef());
                 int DmgRoll = std::max(1, D6Rand(gen) + plyr->GetDam());
                 std::cout << std::string("Enemy defends!\n");
-                std::cout << std::string("You deal ") << (DmgRoll / DefRoll) << std::string(" damage!\n");
-                enmy.DoDamage(DmgRoll / DefRoll);
+                std::cout << std::string("You deal ") << (std::max(1, DmgRoll - DefRoll)) << std::string(" damage!\n");
+                enmy.DoDamage(std::max(1, DmgRoll - DefRoll));
             }
             else
             {
