@@ -14,7 +14,7 @@ void EnemyManager::CalculateWinPerc()
 {
 	if (totalBattles > 0)
 	{
-		winPerc = wins / (totalBattles - ties);
+		winPerc = (float)wins / ((float)totalBattles - (float)ties);
 	}
 }
 
@@ -34,7 +34,7 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 	else
 	{
 		float diffmod = (winPerc - goalWinLoss)*10;
-		int pointchange = diffmod / 5;
+		int pointchange = diffmod / 10;
 		//make enemy strong
 		enemy->SetDam(player->GetDam());
 		enemy->SetDef(player->GetDef());
@@ -50,7 +50,10 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 		}
 		else
 		{
-
+			for (int i = 0; i < pointchange; ++i)
+			{
+				DecStatRand(enemy);
+			}
 		}
 
 	}

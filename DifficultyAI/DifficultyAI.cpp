@@ -10,6 +10,7 @@
 #include <string.h>
 #include <random>
 #include "EnemyManager.h"
+#include <iomanip>
 
 EnemyManager enemyMan;
 Player* mainGuy;
@@ -146,7 +147,7 @@ int main()
         else if (input == "rate")
         {
             enemyMan.CalculateWinPerc();
-            std::cout << std::string("Winrate: ") << enemyMan.GetWinLoss() << std::string("\n");
+            std::cout << std::string("Winrate: ") << std::setw(5) << enemyMan.GetWinLoss() << std::string("\n");
         }
         else if (input == "auto")
         {
