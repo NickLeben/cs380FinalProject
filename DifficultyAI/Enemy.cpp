@@ -45,7 +45,7 @@ char Enemy::Input(int playerAttackVal)
 {
 	//return defend for now, at a later date, use w/l of player to decide how smart enemy is, and weight what the player rolled vs possibility of evading
 
-	if (playerAttackVal > stats.evaMod + 6)
+	if (playerAttackVal > stats.evaMod + 5)
 	{
 		//cannot possibly evade
 		return 'd';

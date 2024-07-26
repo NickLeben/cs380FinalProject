@@ -31,10 +31,10 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 		enemy->SetEva(player->GetEva());
 		enemy->SetHealth(player->GetHealth());
 	}
-	else
+	else if (winPerc < goalWinLoss)
 	{
 		float diffmod = (winPerc - goalWinLoss)*10;
-		int pointchange = diffmod / 10;
+		int pointchange = diffmod / 1;
 		//make enemy strong
 		enemy->SetDam(player->GetDam());
 		enemy->SetDef(player->GetDef());
@@ -48,14 +48,15 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 				IncStatRand(enemy);
 			}
 		}
-		else
+	}
+	else if (goalWinLoss < winPerc)
+	{
+		float diffmod = (goalWinLoss - winPerc) * -10;
+		int pointchange = diffmod / 1;
+		for (int i = 0; i < pointchange; ++i)
 		{
-			for (int i = 0; i < pointchange; ++i)
-			{
-				DecStatRand(enemy);
-			}
+			DecStatRand(enemy);
 		}
-
 	}
 }
 
@@ -92,7 +93,7 @@ void EnemyManager::DecStatRand(Enemy* enmy)
 	std::random_device rd;
 	std::mt19937 gen(rd());
 
-	std::uniform_int_distribution<> DescRand(0, 4);
+	std::uniform_int_distribution<> DescRand(0, 3);
 
 	int rando = DescRand(gen);
 

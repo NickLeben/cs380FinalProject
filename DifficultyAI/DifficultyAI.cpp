@@ -29,7 +29,7 @@ int main()
     bool AutoTest = false;
     int AutoInc = 0;
     int AutoRoom = 0;
-    int AutoLimit = 100;
+    int AutoLimit = 10000;
     int location = 0;
     bool exit = false;
     std::string input;
@@ -262,7 +262,15 @@ void Combat(Enemy enmy, Player* plyr, bool AutoMode)
             std::cout << std::string("They are doing ") << DmgRoll << std::string(" damage.\n");
             if (AutoMode)
             {
-                input = "defend";
+                if (DmgRoll > mainGuy->GetEva() + 5)
+                {
+                    input = "defend";
+                }
+                else
+                {
+                    input = "evade";
+                }
+                turn = 1;
             }
             else
             {

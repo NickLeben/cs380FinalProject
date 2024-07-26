@@ -80,6 +80,7 @@ void Player::DoDamage(int doo)
 
 void Player::IncStatRand()
 {
+	/*
 	std::random_device rd;
 	std::mt19937 gen(rd());
 
@@ -99,6 +100,7 @@ void Player::IncStatRand()
 	{
 		addEva(1);
 	}
+	*/
 }
 
 void Player::HealthRegen()
