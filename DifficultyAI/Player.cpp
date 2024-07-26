@@ -80,7 +80,7 @@ void Player::DoDamage(int doo)
 
 void Player::IncStatRand()
 {
-	std::random_device rd;
+	/*std::random_device rd;
 	std::mt19937 gen(rd());
 
 	std::uniform_int_distribution<> DescRand(0, 4);
@@ -98,7 +98,7 @@ void Player::IncStatRand()
 	else if (rando == 2)
 	{
 		addEva(1);
-	}
+	}*/
 }
 
 void Player::HealthRegen()
