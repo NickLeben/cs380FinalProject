@@ -11,16 +11,18 @@
 #include <random>
 #include "EnemyManager.h"
 
+EnemyManager enemyMan;
+Player* mainGuy;
+
 int main()
 {
     std::cout << "Hello World!\n";
 
-    Player* mainGuy = new Player;
+    mainGuy = new Player;
     std::vector<Room> RoomList;
     InitRoomVector(&RoomList, -1, true);
     std::cout << RoomList[0].Description;
 
-    EnemyManager enemyMan;
     enemyMan.Init();
 
     int location = 0;
@@ -174,6 +176,7 @@ Room GenerateRoom(int Parent)
 
     //temporary
     NewRoom.EnemyInRoom = Enemy(2,2,2,10);
+    enemyMan.AssignStats(&NewRoom.EnemyInRoom, mainGuy);
 
     //use algorithm for items/
     NewRoom.ParentRoom = Parent;
@@ -212,15 +215,15 @@ void Combat(Enemy enmy, Player* plyr)
             if (input == "defend" || input == "Defend")
             {
                 //do dice roll
-                int DefRoll = std::min(1, D6Rand(gen) + plyr->GetDef());
-                int DmgRoll = std::min(1, D6Rand(gen) + enmy.GetDam());
+                int DefRoll = std::max(1, D6Rand(gen) + plyr->GetDef());
+                int DmgRoll = std::max(1, D6Rand(gen) + enmy.GetDam());
                 std::cout << std::string("You take ") << static_cast<int>(DmgRoll / DefRoll) << std::string(" damage!\n");
                 plyr->DoDamage(static_cast<int>(DmgRoll / DefRoll));
             }
             else if (input == "evade" || input == "Evade")
             {
-                int EvaRoll = std::min(1, D6Rand(gen) + plyr->GetEva());
-                int DmgRoll = std::min(1, D6Rand(gen) + enmy.GetDam());
+                int EvaRoll = std::max(1, D6Rand(gen) + plyr->GetEva());
+                int DmgRoll = std::max(1, D6Rand(gen) + enmy.GetDam());
                 if (DmgRoll > EvaRoll)
                 {
                     std::cout << std::string("Evade failed! You take ") << enmy.GetDam() << std::string(" Damage!\n");
@@ -248,8 +251,8 @@ void Combat(Enemy enmy, Player* plyr)
             std::cout << std::string("You attack!\n");
             if (enmy.Input(plyr->GetDam()) == 'd')
             {
-                int DefRoll = std::min(1, D6Rand(gen) + enmy.GetDef());
-                int DmgRoll = std::min(1, D6Rand(gen) + plyr->GetDam());
+                int DefRoll = std::max(1, D6Rand(gen) + enmy.GetDef());
+                int DmgRoll = std::max(1, D6Rand(gen) + plyr->GetDam());
                 std::cout << std::string("Enemy defends!\n");
                 std::cout << std::string("You deal ") << (DmgRoll / DefRoll) << std::string(" damage!\n");
                 enmy.DoDamage(DmgRoll / DefRoll);
@@ -258,8 +261,8 @@ void Combat(Enemy enmy, Player* plyr)
             {
                 std::cout << std::string("Enemy attempts to evade!\n");
                 // roll dice
-                int EvaRoll = std::min(1, D6Rand(gen) + enmy.GetEva());
-                int DmgRoll = std::min(1, D6Rand(gen) + plyr->GetDam());
+                int EvaRoll = std::max(1, D6Rand(gen) + enmy.GetEva());
+                int DmgRoll = std::max(1, D6Rand(gen) + plyr->GetDam());
                 if (EvaRoll > DmgRoll)
                 {
                     std::cout << std::string("They Evaded!\n");
