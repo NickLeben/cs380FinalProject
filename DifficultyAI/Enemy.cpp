@@ -53,3 +53,23 @@ char Enemy::Input(int playerAttackVal)
 	
 	return 'e';
 }
+
+void Enemy::SetDef(int set)
+{
+	stats.defMod = set;
+}
+
+void Enemy::SetDam(int set)
+{
+	 stats.damMod = set;
+}
+
+void Enemy::SetEva(int set)
+{
+	 stats.evaMod = set;
+}
+
+void Enemy::SetHealth(int set)
+{
+	 stats.health = set;
+}

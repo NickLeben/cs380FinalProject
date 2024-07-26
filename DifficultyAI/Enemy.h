@@ -21,6 +21,11 @@ public:
 	void DoDamage(int doo);
 	char Input(int playerAttackVal);
 
+	void SetDef(int set);
+	void SetDam(int set);
+	void SetEva(int set);
+	void SetHealth(int set);
+
 private:
 	EnemyStats stats;
 

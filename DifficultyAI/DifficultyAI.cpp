@@ -8,14 +8,19 @@
 #include "Enemy.h"
 #include <string.h>
 #include <random>
+#include "EnemyManager.h"
 
 int main()
 {
     std::cout << "Hello World!\n";
+
     Player* mainGuy = new Player;
     std::vector<Room> RoomList;
     InitRoomVector(&RoomList, -1, true);
     std::cout << RoomList[0].Description;
+
+    EnemyManager enemyMan;
+    enemyMan.Init();
 
     int location = 0;
     bool exit = false;
