@@ -31,6 +31,7 @@ public:
 	int GetHealth();
 	void DoDamage(int doo);
 	void IncStatRand();
+	void HealthRegen();
 
 private:
 

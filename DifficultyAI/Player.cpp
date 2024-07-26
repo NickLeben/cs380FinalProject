@@ -100,3 +100,8 @@ void Player::IncStatRand()
 		addEva(1);
 	}
 }
+
+void Player::HealthRegen()
+{
+	stats.health = playerStartingHealth;
+}

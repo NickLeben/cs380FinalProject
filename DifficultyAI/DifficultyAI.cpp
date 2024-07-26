@@ -106,6 +106,18 @@ int main()
                 std::cout << RoomList[location].Description;
             }
         }
+        else if (input == "stats")
+        {
+            //add option to print out stats (keep turn = 0)
+            std::cout << std::string("Dam: ") << mainGuy->GetDam() << std::string(", Def: ") << mainGuy->GetDef() << std::string(", Eva: ") << mainGuy->GetEva() << std::string(", Health: ") << mainGuy->GetHealth() << std::string("\n");
+        }
+        else if (input == "rate")
+        {
+            enemyMan.CalculateWinPerc();
+            std::cout << std::string("Winrate: ") << enemyMan.GetWinLoss() << std::string("\n");
+        }
+        // add option to print out player stats
+
     }
 }
 
@@ -203,7 +215,7 @@ void Combat(Enemy enmy, Player* plyr)
         turn = 1;
     }
 
-    while (enmy.GetHealth() > 0)
+    while (enmy.GetHealth() > 0 && mainGuy->GetHealth() > 0)
     {
         std::string input;
         if (turn == 0)
@@ -221,6 +233,7 @@ void Combat(Enemy enmy, Player* plyr)
                 //int DmgRoll = std::max(1, D6Rand(gen) + enmy.GetDam());
                 std::cout << std::string("You take ") << static_cast<int>(DmgRoll / DefRoll) << std::string(" damage!\n");
                 plyr->DoDamage(static_cast<int>(DmgRoll / DefRoll));
+                turn = 1;
             }
             else if (input == "evade" || input == "Evade")
             {
@@ -235,15 +248,15 @@ void Combat(Enemy enmy, Player* plyr)
                 {
                     std::cout << std::string("Evade sucseded!\n");
                 }
+                turn = 1;
             }
             else
             {
                 std::cout << std::string("Due to your innability to spell words, you fumble and take double damage!\n");
                 std::cout << std::string("You take ") << enmy.GetDam()*2 << std::string(" Damage!\n");
                 plyr->DoDamage(enmy.GetDam()*2);
+                turn = 1;
             }
-
-            turn = 1;
         }
         else
         {
@@ -280,5 +293,21 @@ void Combat(Enemy enmy, Player* plyr)
             turn = 0;
         }
     }
+
     std::cout << std::string("Combat over!\n");
+
+    if (mainGuy->GetHealth() > 0 && enmy.GetHealth() < 1)
+    {
+        enemyMan.wins++;
+        std::cout << std::string("You Won!\n");
+    }
+    else
+    {
+        std::cout << std::string("You Lost!\n");
+    }
+
+    enemyMan.totalBattles++;
+
+    mainGuy->IncStatRand();
+    mainGuy->HealthRegen();
 }

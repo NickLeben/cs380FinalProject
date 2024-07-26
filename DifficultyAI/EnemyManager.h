@@ -10,6 +10,7 @@ class EnemyManager
 		void Init();
 		void CalculateWinPerc();
 		void AssignStats(Enemy* enemy, Player* player);
+		float GetWinLoss();
 
 		int totalBattles;
 		int wins;

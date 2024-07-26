@@ -52,3 +52,8 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 		enemy->SetHealth(player->GetHealth() + pointchange);
 	}
 }
+
+float EnemyManager::GetWinLoss()
+{
+	return winPerc;
+}
