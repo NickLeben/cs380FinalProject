@@ -209,21 +209,23 @@ void Combat(Enemy enmy, Player* plyr)
         if (turn == 0)
         {
             //goblin turn
-            std::cout << std::string("Goblin's turn!\n");
+            std::cout << std::string("\nGoblin's turn!\n");
             std::cout << std::string("Do you defend or evade?\n");
+            int DmgRoll = std::min(1, D6Rand(gen) + enmy.GetDam());
+            std::cout << std::string("They are doing ") << DmgRoll << std::string(" damage.\n");
             std::cin >> input;
             if (input == "defend" || input == "Defend")
             {
                 //do dice roll
                 int DefRoll = std::max(1, D6Rand(gen) + plyr->GetDef());
-                int DmgRoll = std::max(1, D6Rand(gen) + enmy.GetDam());
+                //int DmgRoll = std::max(1, D6Rand(gen) + enmy.GetDam());
                 std::cout << std::string("You take ") << static_cast<int>(DmgRoll / DefRoll) << std::string(" damage!\n");
                 plyr->DoDamage(static_cast<int>(DmgRoll / DefRoll));
             }
             else if (input == "evade" || input == "Evade")
             {
                 int EvaRoll = std::max(1, D6Rand(gen) + plyr->GetEva());
-                int DmgRoll = std::max(1, D6Rand(gen) + enmy.GetDam());
+                //int DmgRoll = std::max(1, D6Rand(gen) + enmy.GetDam());
                 if (DmgRoll > EvaRoll)
                 {
                     std::cout << std::string("Evade failed! You take ") << enmy.GetDam() << std::string(" Damage!\n");
@@ -247,7 +249,7 @@ void Combat(Enemy enmy, Player* plyr)
         {
             //your turn
             //attack
-            std::cout << std::string("You're turn!\n");
+            std::cout << std::string("\nYou're turn!\n");
             std::cout << std::string("You attack!\n");
             if (enmy.Input(plyr->GetDam()) == 'd')
             {
