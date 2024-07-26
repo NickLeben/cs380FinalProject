@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "DifficulryAI.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -35,6 +36,10 @@ int main()
                 location = InitRoomVector(&RoomList,location);
                 RoomList[oldloc].ForwardsRoom = location;
                 std::cout << RoomList[location].Description;
+                //if (RoomList[location].EnemyInRoom.GetHealth() > 0)
+                //{
+                Combat(RoomList[location].EnemyInRoom, mainGuy);
+                //}
             }
             else
             {
@@ -54,6 +59,7 @@ int main()
                 location = InitRoomVector(&RoomList, location);
                 RoomList[oldloc].rightRoom = location;
                 std::cout << RoomList[location].Description;
+                Combat(RoomList[location].EnemyInRoom, mainGuy);
             }
             else
             {
@@ -73,6 +79,7 @@ int main()
                 location = InitRoomVector(&RoomList, location);
                 RoomList[oldloc].LeftRoom = location;
                 std::cout << RoomList[location].Description;
+                Combat(RoomList[location].EnemyInRoom, mainGuy);
             }
             else
             {
@@ -160,7 +167,108 @@ Room GenerateRoom(int Parent)
         }
     }
 
+    //temporary
+    NewRoom.EnemyInRoom = Enemy(2,2,2,10);
+
     //use algorithm for items/
     NewRoom.ParentRoom = Parent;
     return NewRoom;
+}
+
+void Combat(Enemy enmy, Player* plyr)
+{
+    int turn = 0;
+    std::cout << std::string("Supprise, A goblin! \n");
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> TurnRand(0, 1);
+    std::uniform_int_distribution<> D6Rand(1, 6);
+
+    if (TurnRand(gen) == 0)
+    {
+        std::cout << std::string("Goblin goes first!\n");
+    }
+    else
+    {
+        std::cout << std::string("You go first!\n");
+        turn = 1;
+    }
+
+    while (enmy.GetHealth() > 0)
+    {
+        std::string input;
+        if (turn == 0)
+        {
+            //goblin turn
+            std::cout << std::string("Goblin's turn!\n");
+            std::cout << std::string("Do you defend or evade?\n");
+            std::cin >> input;
+            if (input == "defend" || input == "Defend")
+            {
+                //do dice roll
+                int DefRoll = std::min(1, D6Rand(gen) + plyr->GetDef());
+                int DmgRoll = std::min(1, D6Rand(gen) + enmy.GetDam());
+                std::cout << std::string("You take ") << static_cast<int>(DmgRoll / DefRoll) << std::string(" damage!\n");
+                plyr->DoDamage(static_cast<int>(DmgRoll / DefRoll));
+            }
+            else if (input == "evade" || input == "Evade")
+            {
+                int EvaRoll = std::min(1, D6Rand(gen) + plyr->GetEva());
+                int DmgRoll = std::min(1, D6Rand(gen) + enmy.GetDam());
+                if (DmgRoll > EvaRoll)
+                {
+                    std::cout << std::string("Evade failed! You take ") << enmy.GetDam() << std::string(" Damage!\n");
+                    plyr->DoDamage(enmy.GetDam());
+                }
+                else
+                {
+                    std::cout << std::string("Evade sucseded!\n");
+                }
+            }
+            else
+            {
+                std::cout << std::string("Due to your innability to spell words, you fumble and take double damage!\n");
+                std::cout << std::string("You take ") << enmy.GetDam()*2 << std::string(" Damage!\n");
+                plyr->DoDamage(enmy.GetDam()*2);
+            }
+
+            turn = 1;
+        }
+        else
+        {
+            //your turn
+            //attack
+            std::cout << std::string("You're turn!\n");
+            std::cout << std::string("You attack!\n");
+            if (enmy.Input(plyr->GetDam()) == 'd')
+            {
+                int DefRoll = std::min(1, D6Rand(gen) + enmy.GetDef());
+                int DmgRoll = std::min(1, D6Rand(gen) + plyr->GetDam());
+                std::cout << std::string("Enemy defends!\n");
+                std::cout << std::string("You deal ") << (DmgRoll / DefRoll) << std::string(" damage!\n");
+                enmy.DoDamage(DmgRoll / DefRoll);
+            }
+            else
+            {
+                std::cout << std::string("Enemy attempts to evade!\n");
+                // roll dice
+                int EvaRoll = std::min(1, D6Rand(gen) + enmy.GetEva());
+                int DmgRoll = std::min(1, D6Rand(gen) + plyr->GetDam());
+                if (EvaRoll > DmgRoll)
+                {
+                    std::cout << std::string("They Evaded!\n");
+                }
+                else
+                {
+                    std::cout << std::string("Evade Failed!\n");
+                    enmy.DoDamage(DmgRoll);
+                    std::cout << std::string("You deal \n") << DmgRoll << std::string(" damage!\n");
+                }
+            }
+            std::cout << std::string("Enemy Has ") << enmy.GetHealth() << std::string(" health.\n");
+            turn = 0;
+        }
+    }
+    std::cout << std::string("Combat over!\n");
 }

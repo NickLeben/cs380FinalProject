@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include "Player.h"
 
 class Item
 {
@@ -21,3 +22,4 @@ public:
 
 int InitRoomVector(std::vector<Room>* RoomList, int loc, bool start = false);
 Room GenerateRoom(int ParentRoom);
+void Combat(Enemy enmy, Player* plyr);
