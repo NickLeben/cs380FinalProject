@@ -30,6 +30,7 @@ public:
 	int GetEva();
 	int GetHealth();
 	void DoDamage(int doo);
+	void IncStatRand();
 
 private:
 

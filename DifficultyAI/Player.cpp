@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <random>
 
 int playerStartingHealth = 10;
 
@@ -75,4 +76,27 @@ int Player::GetHealth()
 void Player::DoDamage(int doo)
 {
 	stats.health -= doo;
+}
+
+void Player::IncStatRand()
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	std::uniform_int_distribution<> DescRand(0, 4);
+
+	int rando = DescRand(gen);
+
+	if (rando == 0)
+	{
+		addDam(1);
+	}
+	else if (rando == 1)
+	{
+		addDef(1);
+	}
+	else if (rando == 2)
+	{
+		addEva(1);
+	}
 }
