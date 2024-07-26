@@ -1,5 +1,5 @@
 #include "EnemyManager.h"
-
+#include <random>
 
 void EnemyManager::Init()
 {
@@ -31,29 +31,78 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 		enemy->SetEva(player->GetEva());
 		enemy->SetHealth(player->GetHealth());
 	}
-	else if (winPerc > goalWinLoss)
-	{
-		int diffmod = winPerc - goalWinLoss;
-		int pointchange = diffmod / 5;
-		//make enemy strong
-		enemy->SetDam(player->GetDam() + pointchange);
-		enemy->SetDef(player->GetDef() + pointchange);
-		enemy->SetEva(player->GetEva() + pointchange);
-		enemy->SetHealth(player->GetHealth() + pointchange);
-	}
 	else
 	{
-		int diffmod = winPerc - goalWinLoss;
-		int pointchange = (diffmod / 5);
-		//make enemy weak
-		enemy->SetDam(player->GetDam() + pointchange);
-		enemy->SetDef(player->GetDef() + pointchange);
-		enemy->SetEva(player->GetEva() + pointchange);
-		enemy->SetHealth(player->GetHealth() + pointchange);
+		float diffmod = (winPerc - goalWinLoss)*10;
+		int pointchange = diffmod / 5;
+		//make enemy strong
+		enemy->SetDam(player->GetDam());
+		enemy->SetDef(player->GetDef());
+		enemy->SetEva(player->GetEva());
+		enemy->SetHealth(player->GetHealth());
+
+		if (pointchange > 0)
+		{
+			for (int i = 0; i < pointchange; ++i)
+			{
+				IncStatRand(enemy);
+			}
+		}
+		else
+		{
+
+		}
+
 	}
 }
 
 float EnemyManager::GetWinLoss()
 {
 	return winPerc;
+}
+
+void EnemyManager::IncStatRand(Enemy* enmy)
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	std::uniform_int_distribution<> DescRand(0, 4);
+
+	int rando = DescRand(gen);
+
+	if (rando == 0)
+	{
+		enmy->SetDam(enmy->GetDam() + 1);
+	}
+	else if (rando == 1)
+	{
+		enmy->SetDef(enmy->GetDef() + 1);
+	}
+	else if (rando == 2)
+	{
+		enmy->SetEva(enmy->GetEva() + 1);
+	}
+}
+
+void EnemyManager::DecStatRand(Enemy* enmy)
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	std::uniform_int_distribution<> DescRand(0, 4);
+
+	int rando = DescRand(gen);
+
+	if (rando == 0)
+	{
+		enmy->SetDam(enmy->GetDam() - 1);
+	}
+	else if (rando == 1)
+	{
+		enmy->SetDef(enmy->GetDef() - 1);
+	}
+	else if (rando == 2)
+	{
+		enmy->SetEva(enmy->GetEva() - 1);
+	}
 }

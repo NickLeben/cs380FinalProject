@@ -11,6 +11,8 @@ class EnemyManager
 		void CalculateWinPerc();
 		void AssignStats(Enemy* enemy, Player* player);
 		float GetWinLoss();
+		void IncStatRand(Enemy* enmy);
+		void DecStatRand(Enemy* enmy);
 
 		int totalBattles;
 		int wins;
