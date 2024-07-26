@@ -129,10 +129,12 @@
   <ItemGroup>
     <ClCompile Include="DifficultyAI.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
