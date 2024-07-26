@@ -211,7 +211,7 @@ void Combat(Enemy enmy, Player* plyr)
             //goblin turn
             std::cout << std::string("\nGoblin's turn!\n");
             std::cout << std::string("Do you defend or evade?\n");
-            int DmgRoll = std::min(1, D6Rand(gen) + enmy.GetDam());
+            int DmgRoll = std::max(1, D6Rand(gen) + enmy.GetDam());
             std::cout << std::string("They are doing ") << DmgRoll << std::string(" damage.\n");
             std::cin >> input;
             if (input == "defend" || input == "Defend")
