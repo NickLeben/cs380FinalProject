@@ -31,10 +31,10 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 		enemy->SetEva(player->GetEva());
 		enemy->SetHealth(player->GetHealth());
 	}
-	else if (winPerc < goalWinLoss)
+	else if (winPerc > goalWinLoss)
 	{
 		float diffmod = (winPerc - goalWinLoss)*10;
-		int pointchange = diffmod / 1;
+		int pointchange = diffmod / 2;
 		//make enemy strong
 		enemy->SetDam(player->GetDam());
 		enemy->SetDef(player->GetDef());
@@ -49,10 +49,10 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 			}
 		}
 	}
-	else if (goalWinLoss < winPerc)
+	else if (goalWinLoss > winPerc)
 	{
 		float diffmod = (goalWinLoss - winPerc) * -10;
-		int pointchange = diffmod / 1;
+		int pointchange = diffmod / 2;
 		for (int i = 0; i < pointchange; ++i)
 		{
 			DecStatRand(enemy);

@@ -262,7 +262,7 @@ void Combat(Enemy enmy, Player* plyr, bool AutoMode)
             std::cout << std::string("They are doing ") << DmgRoll << std::string(" damage.\n");
             if (AutoMode)
             {
-                if (DmgRoll > mainGuy->GetEva() + 5)
+                if (D6Rand(gen) > 3)
                 {
                     input = "defend";
                 }
