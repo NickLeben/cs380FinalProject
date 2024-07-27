@@ -8,7 +8,7 @@ void EnemyManager::Init()
 	wins = 0.0f;
 	ties = 0.0f;
 
-	goalWinLoss = .4f;
+	goalWinLoss = .33f;
 }
 
 void EnemyManager::CalculateWinPerc()
@@ -58,8 +58,7 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 		{
 			DecStatRand(enemy);
 		}
-		std::cout << "Gobo stats: Dam " << enemy->GetDam() << ". Def " << enemy->GetDef() << ". Eva " << enemy->GetEva() << ". Hp" << enemy->GetHealth() << "\n";
-
+		
 	}
 
 	if (goalWinLoss < 0.4f && goalWinLoss < winPerc)
@@ -68,6 +67,9 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 		enemy->SetDef(5);
 		enemy->SetEva(5);
 	}
+
+	std::cout << "Gobo stats: Dam " << enemy->GetDam() << ". Def " << enemy->GetDef() << ". Eva " << enemy->GetEva() << ". Hp" << enemy->GetHealth() << "\n";
+
 }
 
 float EnemyManager::GetWinLoss()
