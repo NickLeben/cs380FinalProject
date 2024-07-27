@@ -7,7 +7,7 @@ void EnemyManager::Init()
 	wins = 0.0f;
 	ties = 0.0f;
 
-	goalWinLoss = .98f;
+	goalWinLoss = .4f;
 }
 
 void EnemyManager::CalculateWinPerc()
@@ -34,7 +34,7 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 	else if (winPerc < goalWinLoss)
 	{
 		float diffmod = (winPerc - goalWinLoss)*10;
-		int pointchange = diffmod / 2;
+		int pointchange = diffmod / 1;
 		//make enemy strong
 		enemy->SetDam(player->GetDam());
 		enemy->SetDef(player->GetDef());
@@ -52,11 +52,18 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 	else if (goalWinLoss < winPerc)
 	{
 		float diffmod = (goalWinLoss - winPerc) * 10;
-		int pointchange = diffmod / 2;
+		int pointchange = diffmod / 1;
 		for (int i = 0; i > pointchange; --i)
 		{
 			DecStatRand(enemy);
 		}
+	}
+
+	if (goalWinLoss < 0.4f && goalWinLoss < winPerc)
+	{
+		enemy->SetDam(5);
+		enemy->SetDef(5);
+		enemy->SetEva(5);
 	}
 }
 
@@ -70,7 +77,7 @@ void EnemyManager::IncStatRand(Enemy* enmy)
 	std::random_device rd;
 	std::mt19937 gen(rd());
 
-	std::uniform_int_distribution<> DescRand(0, 4);
+	std::uniform_int_distribution<> DescRand(0, 3);
 
 	int rando = DescRand(gen);
 
