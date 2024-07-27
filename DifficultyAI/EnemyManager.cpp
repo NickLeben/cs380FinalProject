@@ -1,5 +1,6 @@
 #include "EnemyManager.h"
 #include <random>
+#include <iostream>
 
 void EnemyManager::Init()
 {
@@ -57,6 +58,8 @@ void EnemyManager::AssignStats(Enemy* enemy, Player* player)
 		{
 			DecStatRand(enemy);
 		}
+		std::cout << "Gobo stats: Dam " << enemy->GetDam() << ". Def " << enemy->GetDef() << ". Eva " << enemy->GetEva() << ". Hp" << enemy->GetHealth() << "\n";
+
 	}
 
 	if (goalWinLoss < 0.4f && goalWinLoss < winPerc)
